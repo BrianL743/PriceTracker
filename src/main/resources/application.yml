@@ -1,0 +1,23 @@
+management:
+  endpoints:
+    shutdown:
+      enabled: true
+    web:
+      exposure:
+        include: '*'
+server:
+  port: 9111
+spring:
+  datasource:
+    username: SA
+    password:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    platform: h2
+  application:
+    name: BBS-Service
+  h2:
+    console:
+      enabled: true
+      path: /console
+    
