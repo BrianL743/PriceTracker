@@ -1,5 +1,6 @@
 package dev.lk.entities;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "price")
@@ -23,33 +27,44 @@ public class Price {
 	@Column(name = "pr_id")
 	private int prid;
 	
-	@Column(name = "p_id")
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "p_id")
+	@ManyToOne
+	@JoinColumn(name="p_id")
+	@JsonIgnoreProperties({"prices"})
 	private Product product;
 	
-	@Column(name = "check_time")
-	private LocalDateTime checkTime;
+	@Column(name = "price_time")
+	private Timestamp priceTime;
 	
 	@Column(name = "amount")
 	private double amount;
+	
+	@Column(name = "shipping")
+	private double shipping;
 
 	public Price() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Price(int prid, Product product, LocalDateTime checkTime, double amount) {
+	public Price(int prid, Timestamp priceTime, double amount, double shipping) {
 		super();
 		this.prid = prid;
-		this.product = product;
-		this.checkTime = checkTime;
+		this.priceTime = priceTime;
 		this.amount = amount;
+		this.shipping = shipping;
 	}
 
 	@Override
 	public String toString() {
-		return "Price [prid=" + prid + ", product=" + product + ", checkTime=" + checkTime + ", amount=" + amount + "]";
+		return "Price [prid=" + prid + ", priceTime=" + priceTime + ", amount=" + amount + ", shipping=" + shipping + "]";
+	}
+
+	public double getShipping() {
+		return shipping;
+	}
+
+	public void setShipping(double shipping) {
+		this.shipping = shipping;
 	}
 
 	public int getPrid() {
@@ -68,12 +83,12 @@ public class Price {
 		this.product = product;
 	}
 
-	public LocalDateTime getCheckTime() {
-		return checkTime;
+	public Timestamp getPriceTime() {
+		return priceTime;
 	}
 
-	public void setCheckTime(LocalDateTime checkTime) {
-		this.checkTime = checkTime;
+	public void setPriceTime(Timestamp priceTime) {
+		this.priceTime = priceTime;
 	}
 
 	public double getAmount() {

@@ -12,6 +12,7 @@ import dev.lk.entities.Product;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Integer>{
 
-	List<Product> findByProductName(String productName);
+	List<Product> findByTitleContainsIgnoreCase(String Title);
+	
 	
 }

@@ -1,19 +1,24 @@
 package dev.lk.entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="product")
@@ -23,45 +28,54 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "p_id")
 	private int pid;
+
+	@OneToMany(mappedBy="product", fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"product"})
+	private List<Price> prices = new ArrayList<Price>();
 	
-	@Column(name = "s_id")
-	@ManyToOne
-	@JoinColumn(name = "s_id")
-	private Store store;
+	@Column(name = "title")
+	private String title;
 	
-	@Column(name = "pr_id")
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "pr_id")
-	private Price price;
+	@Column(name = "store")
+	private String store;
 	
-	@Column(name = "product_name")
-	private String productName;
+	@Column(name = "product_id")
+	private String productId;
 	
+	public String getStore() {
+		return store;
+	}
+
+	public void setStore(String store) {
+		this.store = store;
+	}
+
 	@Column(name = "image_url")
 	private String imageUrl;
 
 	@ManyToMany(mappedBy = "products")
-	private List<Customer> customers = new ArrayList<Customer>();
+	@JsonIgnoreProperties({"products"})
+	private Set<Customer> customers = new HashSet<Customer>();
 
 	public Product() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Product(int pid, Store store, Price price, String productName, String imageUrl, List<Customer> customers) {
+	public Product(int pid, List<Price> prices, String title,String productId, String imageUrl, Set<Customer> customers) {
 		super();
 		this.pid = pid;
-		this.store = store;
-		this.price = price;
-		this.productName = productName;
+		this.prices = prices;
+		this.title = title;
+		this.productId = productId;
 		this.imageUrl = imageUrl;
 		this.customers = customers;
 	}
 
 	@Override
 	public String toString() {
-		return "Product [pid=" + pid + ", store=" + store + ", price=" + price + ", productName=" + productName
-				+ ", imageUrl=" + imageUrl + ", customers=" + customers + "]";
+		return "Product [pid=" + pid + ", title=" + title + ", productId=" + productId + ", price=" + prices.get(0) 
+				+ ", imageUrl=" + imageUrl + "]";
 	}
 
 	public int getPid() {
@@ -72,43 +86,43 @@ public class Product {
 		this.pid = pid;
 	}
 
-	public Store getStore() {
-		return store;
+	public List<Price> getPrices() {
+		return prices;
 	}
 
-	public void setStore(Store store) {
-		this.store = store;
+	public void setPrices(List<Price> prices) {
+		this.prices = prices;
 	}
 
-	public Price getPrice() {
-		return price;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setPrice(Price price) {
-		this.price = price;
-	}
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getImageUrl() {
 		return imageUrl;
 	}
 
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
 
-	public List<Customer> getCustomers() {
+	public Set<Customer> getCustomers() {
 		return customers;
 	}
 
-	public void setCustomers(List<Customer> customers) {
+	public void setCustomers(Set<Customer> customers) {
 		this.customers = customers;
 	}
 	

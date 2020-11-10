@@ -12,6 +12,6 @@ import dev.lk.entities.Customer;
 @Repository
 public interface CustomerRepository extends CrudRepository<Customer, Integer>{
 
-	List<Customer> findByUsername(String username);
+	Customer findByUsername(String username);
 	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="customer")
@@ -31,11 +34,11 @@ public class Customer {
 
 	public Customer() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "customer_product", joinColumns = {@JoinColumn(name="c_id")}, inverseJoinColumns = {@JoinColumn(name="p_id")})
+	@JsonIgnoreProperties({"customers"})
 	private List<Product> products = new ArrayList<Product>();
 
 	public Customer(int cid, String username, String password, List<Product> products) {
@@ -45,11 +48,10 @@ public class Customer {
 		this.password = password;
 		this.products = products;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Customer [cid=" + cid + ", username=" + username + ", password=" + password + ", products=" + products
-				+ "]";
+		return "Customer [cid=" + cid + ", username=" + username + ", password=" + password + ", products=" + "]";
 	}
 
 	public int getCid() {
